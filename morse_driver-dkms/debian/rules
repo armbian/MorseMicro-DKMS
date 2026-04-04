@@ -23,6 +23,7 @@ override_dh_auto_install:
 	cp -a dot11ah debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
 	cp -a mmrc debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
 	cp -a mmrc-submodule debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
+	echo 'ccflags-y += -Wno-error' >> debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/Makefile
 
 override_dh_auto_clean:
 
