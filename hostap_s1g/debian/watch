@@ -1,0 +1,9 @@
+version=4
+
+# Upstream does not use tags or releases; versions correspond to branch names
+# (e.g. 1.14, 1.15, 1.16). uscan cannot automatically track new versions.
+# Manual updates are required when a new upstream branch is created.
+
+opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%hostap-s1g-$1.tar.gz%" \
+  https://github.com/MorseMicro/hostap/tags \
+  (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@

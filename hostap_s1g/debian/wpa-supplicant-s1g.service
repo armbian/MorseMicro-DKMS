@@ -1,0 +1,13 @@
+[Unit]
+Description=WPA supplicant with S1G (Wi-Fi HaLow) support
+Documentation=man:wpa_supplicant-s1g(8)
+After=dbus.service
+
+[Service]
+Type=dbus
+BusName=fi.w1.wpa_supplicant1_s1g
+ExecStart=/usr/sbin/wpa_supplicant_s1g -u -s -O /run/wpa-supplicant-s1g
+
+[Install]
+WantedBy=multi-user.target
+Alias=dbus-fi.w1.wpa_supplicant1_s1g.service

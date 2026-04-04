@@ -1,0 +1,7 @@
+morse-driver (1.16.4+gateworks-1) unstable; urgency=medium
+
+  * Initial DKMS packaging of Gateworks fork.
+  * Includes kernel 6.14/6.15/6.16 compatibility fixes.
+  * Enables SDIO, SPI, and USB bus transports.
+
+ -- Austin <vidplace7@gmail.com>  Sat, 04 Apr 2026 00:00:00 +0000

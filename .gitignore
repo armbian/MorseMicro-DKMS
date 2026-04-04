@@ -1,0 +1,8 @@
+*.vscode-*
+/*.buildinfo
+/*.changes
+/*.deb
+/*.ddeb
+/*.debian.tar.xz
+/*.dsc
+/*.orig.tar.gz

@@ -1,0 +1,13 @@
+[Unit]
+Description=IEEE 802.11 AP daemon with S1G (Wi-Fi HaLow) support
+Documentation=man:hostapd-s1g(8)
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/hostapd-s1g.pid
+EnvironmentFile=-/etc/default/hostapd-s1g
+ExecStart=/usr/sbin/hostapd_s1g -B -P /run/hostapd-s1g.pid $DAEMON_OPTS /etc/hostapd-s1g/hostapd.conf
+
+[Install]
+WantedBy=multi-user.target

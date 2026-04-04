@@ -1,0 +1,26 @@
+Source: morse-cli
+Section: net
+Priority: optional
+Maintainer: Austin <vidplace7@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ libnl-3-dev,
+ libnl-genl-3-dev,
+ libusb-1.0-0-dev,
+ pkg-config,
+Standards-Version: 4.6.2
+Homepage: https://github.com/MorseMicro/morse_cli
+Vcs-Git: https://github.com/vidplace7/Deb-MorseMicro.git [morse_cli]
+Vcs-Browser: https://github.com/vidplace7/Deb-MorseMicro/tree/main/morse_cli
+Rules-Requires-Root: no
+
+Package: morse-cli
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Morse Micro HaLow userspace control utility
+ morse_cli is a command-line utility for controlling and managing
+ Morse Micro Wi-Fi HaLow wireless devices. It supports communication
+ via netlink (NL80211), UART SLIP, and TCP SLIP transports to configure
+ and monitor HaLow interfaces.

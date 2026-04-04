@@ -1,0 +1,45 @@
+Source: hostap-s1g
+Section: net
+Priority: optional
+Maintainer: Austin <vidplace7@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ libdbus-1-dev,
+ libnl-3-dev,
+ libnl-genl-3-dev,
+ libnl-route-3-dev,
+ libssl-dev,
+ pkg-config,
+Standards-Version: 4.6.2
+Homepage: https://github.com/MorseMicro/hostap
+Vcs-Git: https://github.com/vidplace7/Deb-MorseMicro.git [hostap]
+Vcs-Browser: https://github.com/vidplace7/Deb-MorseMicro/tree/main/hostap
+Rules-Requires-Root: no
+
+Package: hostapd-s1g
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: IEEE 802.11 AP daemon with Morse Micro S1G (Wi-Fi HaLow) support
+ hostapd-s1g is an IEEE 802.11 access point and IEEE 802.1X/WPA/WPA2/EAP
+ authenticator built from the Morse Micro fork of hostap with 802.11ah
+ (Wi-Fi HaLow / Sub-1 GHz) support enabled.
+ .
+ Binaries are installed as hostapd_s1g and hostapd_cli_s1g to allow
+ coexistence with the standard Debian hostapd package.
+
+Package: wpa-supplicant-s1g
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: WPA supplicant with Morse Micro S1G (Wi-Fi HaLow) support
+ wpa-supplicant-s1g is a WPA/WPA2/IEEE 802.1X supplicant built from the
+ Morse Micro fork of hostap with 802.11ah (Wi-Fi HaLow / Sub-1 GHz)
+ support enabled. Includes TWT, standby mode, and keep-alive offload
+ features for S1G power management.
+ .
+ Binaries are installed as wpa_supplicant_s1g, wpa_cli_s1g, and
+ wpa_passphrase_s1g to allow coexistence with the standard Debian
+ wpasupplicant package.

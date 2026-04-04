@@ -1,0 +1,5 @@
+[D-BUS Service]
+Name=fi.w1.wpa_supplicant1_s1g
+Exec=/usr/sbin/wpa_supplicant_s1g -u -s -O /run/wpa-supplicant-s1g
+User=root
+SystemdService=wpa-supplicant-s1g.service

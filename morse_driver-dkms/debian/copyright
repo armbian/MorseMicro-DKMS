@@ -1,0 +1,24 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: morse_driver
+Upstream-Contact: Gateworks <https://github.com/Gateworks/morse_driver/issues>
+Source: https://github.com/Gateworks/morse_driver
+
+Files: *
+Copyright: 2020-2025 Morse Micro Pty. Ltd.
+License: GPL-2.0-only
+
+Files: mmrc-submodule/*
+Copyright: 2020-2025 Morse Micro Pty. Ltd.
+License: GPL-2.0-only
+
+Files: debian/*
+Copyright: 2026 Austin <vidplace7@gmail.com>
+License: Apache-2.0
+
+License: GPL-2.0-only
+ On Debian systems, the complete text of the GNU General Public License
+ version 2 can be found in "/usr/share/common-licenses/GPL-2".
+
+License: Apache-2.0
+ On Debian systems, the complete text of the Apache License version 2.0
+ can be found in "/usr/share/common-licenses/Apache-2.0".

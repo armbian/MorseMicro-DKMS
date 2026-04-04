@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
+UPSTREAM_BRANCH = v1.16
+ORIG_TARBALL = ../hostap-s1g_$(VERSION).orig.tar.gz
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# Generate hostapd build configuration
+	cp hostapd/defconfig hostapd/.config
+	echo "CONFIG_IEEE80211AH=y" >> hostapd/.config
+
+	# Generate wpa_supplicant build configuration
+	cp wpa_supplicant/defconfig wpa_supplicant/.config
+	echo "CONFIG_IEEE80211AH=y" >> wpa_supplicant/.config
+	echo "CONFIG_S1G_TWT=y" >> wpa_supplicant/.config
+	echo "CONFIG_MORSE_STANDBY_MODE=y" >> wpa_supplicant/.config
+	echo "CONFIG_MORSE_KEEP_ALIVE_OFFLOAD=y" >> wpa_supplicant/.config
+
+override_dh_auto_build:
+	$(MAKE) -C hostapd V=1 EXTRA_CFLAGS="-Wno-error=deprecated-declarations"
+	$(MAKE) -C wpa_supplicant V=1 EXTRA_CFLAGS="-Wno-error=deprecated-declarations"
+
+	# Rename manpages to match S1G binary names
+	cp hostapd/hostapd.8 hostapd/hostapd_s1g.8
+	cp hostapd/hostapd_cli.1 hostapd/hostapd_cli_s1g.1
+
+override_dh_auto_install:
+	# D-Bus policy and activation files for wpa_supplicant-s1g
+	install -D -m 0644 debian/wpa-supplicant-s1g.dbus-system-policy.conf \
+		debian/wpa-supplicant-s1g/usr/share/dbus-1/system.d/wpa-supplicant-s1g.conf
+	install -D -m 0644 debian/wpa-supplicant-s1g.dbus-system-service \
+		debian/wpa-supplicant-s1g/usr/share/dbus-1/system-services/fi.w1.wpa_supplicant1_s1g.service
+
+override_dh_auto_test:
+	# No test suite available
+
+override_dh_auto_clean:
+	[ ! -f hostapd/.config ] || $(MAKE) -C hostapd clean
+	[ ! -f wpa_supplicant/.config ] || $(MAKE) -C wpa_supplicant clean
+	rm -f hostapd/.config wpa_supplicant/.config
+	rm -f hostapd/hostapd_s1g.8 hostapd/hostapd_cli_s1g.1
+
+get-orig-source:
+	wget -O $(ORIG_TARBALL) \
+		https://github.com/MorseMicro/hostap/archive/refs/heads/$(UPSTREAM_BRANCH).tar.gz
+	@echo "Created $(ORIG_TARBALL)"

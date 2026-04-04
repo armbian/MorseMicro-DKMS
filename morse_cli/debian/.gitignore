@@ -1,0 +1,7 @@
+.debhelper/
+debhelper-build-stamp
+files
+morse-cli/
+morse_cli/
+*.debhelper.log
+*.substvars

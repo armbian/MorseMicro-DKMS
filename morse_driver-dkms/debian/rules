@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
+UPSTREAM_GIT = https://github.com/Gateworks/morse_driver.git
+UPSTREAM_BRANCH = 1.16.4-gateworks
+ORIG_TARBALL = ../morse-driver_$(VERSION).orig.tar.gz
+
+%:
+	dh $@ --with dkms
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+
+override_dh_auto_test:
+
+override_dh_auto_install:
+	install -d debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)
+	cp -a Makefile Kconfig *.c *.h LICENSE \
+		debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
+	cp -a dot11ah debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
+	cp -a mmrc debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
+	cp -a mmrc-submodule debian/morse-driver-dkms/usr/src/morse-driver-$(VERSION)/
+
+override_dh_auto_clean:
+
+get-orig-source:
+	rm -rf ../morse-driver-$(VERSION)
+	git clone --depth=1 --branch $(UPSTREAM_BRANCH) --recurse-submodules \
+		$(UPSTREAM_GIT) ../morse-driver-$(VERSION)
+	tar czf $(ORIG_TARBALL) \
+		--exclude='.git*' \
+		-C .. morse-driver-$(VERSION)
+	rm -rf ../morse-driver-$(VERSION)
+	@echo "Created $(ORIG_TARBALL)"

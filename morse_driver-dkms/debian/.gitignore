@@ -1,0 +1,7 @@
+.debhelper/
+debhelper-build-stamp
+files
+morse-driver-dkms/
+*.debhelper.log
+*.debhelper
+*.substvars

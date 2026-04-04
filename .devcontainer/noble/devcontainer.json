@@ -1,0 +1,14 @@
+{
+  "name": "Debian Packaging (noble)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "jelmer.vscode-debian"
+      ]
+    }
+  },
+  "remoteUser": "root"
+}

@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
+UPSTREAM_BRANCH = 1.16
+ORIG_TARBALL = ../morse-firmware_$(VERSION).orig.tar.gz
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	# Firmware is precompiled binary; nothing to build
+
+override_dh_auto_install:
+	$(MAKE) install TARGET_DIR=$(CURDIR)/debian/morse-firmware/lib/firmware/morse
+
+override_dh_auto_clean:
+
+get-orig-source:
+	wget -O $(ORIG_TARBALL) \
+		https://github.com/MorseMicro/morse-firmware/archive/refs/heads/$(UPSTREAM_BRANCH).tar.gz
+	@echo "Created $(ORIG_TARBALL)"

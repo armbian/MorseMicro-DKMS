@@ -1,0 +1,66 @@
+name: Build Packages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.arch.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [forky, trixie, bookworm, resolute, noble, jammy]
+        package: [hostap_s1g, morse_cli, morse_driver-dkms, morse-firmware]
+        arch:
+          - runner: ubuntu-24.04
+            name: amd64
+          - runner: ubuntu-24.04-arm
+            name: arm64
+        exclude:
+          # Architecture: all packages — identical output on both arches
+          - package: morse-firmware
+            arch:
+              name: arm64
+          - package: morse_driver-dkms
+            arch:
+              name: arm64
+          # Ubuntu jammy lacks dh-dkms, maybe revisit
+          - distro: jammy
+            package: morse_driver-dkms
+
+
+    name: ${{ matrix.package }} (${{ matrix.distro }}, ${{ matrix.arch.name }})
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build
+        uses: devcontainers/ci@v0.3
+        with:
+          configFile: .devcontainer/${{ matrix.distro }}/devcontainer.json
+          push: never
+          runCmd: |
+            set -e
+            cd ${{ matrix.package }}
+
+            # Fetch upstream source tarball
+            if grep -q '^get-orig-source:' debian/rules; then
+              make -f debian/rules get-orig-source
+            fi
+            origtargz --unpack=yes
+
+            # Build unsigned packages
+            dpkg-buildpackage -us -uc
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.package }}-${{ matrix.distro }}-${{ matrix.arch.name }}
+          path: |
+            *.deb
+            *.buildinfo
+            *.changes

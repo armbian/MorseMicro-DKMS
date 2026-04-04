@@ -1,0 +1,26 @@
+Source: morse-firmware
+Section: non-free-firmware/kernel
+Priority: optional
+Maintainer: Austin <vidplace7@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.6.2
+Homepage: https://github.com/MorseMicro/morse-firmware
+Vcs-Git: https://github.com/vidplace7/Deb-MorseMicro.git [morse-firmware]
+Vcs-Browser: https://github.com/vidplace7/Deb-MorseMicro/tree/main/morse-firmware
+Rules-Requires-Root: no
+
+Package: morse-firmware
+Architecture: all
+Depends:
+ ${misc:Depends},
+Description: Morse Micro Wi-Fi HaLow firmware and board configuration files
+ Binary firmware images and Board Configuration Files (BCFs) required
+ for operation of modules based on Morse Micro's Wi-Fi HaLow chips,
+ including MM6108 and MM8108.
+ .
+ BCFs are included for Morse Micro reference designs as well as modules
+ from partners including AzureWave, NetPrisma, and Quectel.
+ .
+ Files are installed to /lib/firmware/morse/ for use by the Morse Micro
+ kernel driver.
