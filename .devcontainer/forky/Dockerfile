@@ -1,5 +1,3 @@
-# Switch to devcontainers base image for forky when available
-# FROM mcr.microsoft.com/devcontainers/base:forky
 FROM debian:forky
 
 RUN apt-get update \

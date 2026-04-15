@@ -6,7 +6,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "jelmer.vscode-debian"
+        "jelmer.vscode-debian",
+        "github.vscode-github-actions"
       ]
     }
   },

@@ -1,6 +1,3 @@
-# Switch to devcontainers base image for resolute when available
-# FROM mcr.microsoft.com/devcontainers/base:resolute
-
 FROM ubuntu:resolute
 
 RUN apt-get update \

@@ -17,16 +17,27 @@ jobs:
         arch:
           - runner: ubuntu-24.04
             name: amd64
+            platform: linux/amd64
           - runner: ubuntu-24.04-arm
             name: arm64
+            platform: linux/arm64
+          - runner: ubuntu-24.04-arm
+            name: armhf
+            platform: linux/arm/v7
         exclude:
-          # Architecture: all packages — identical output on both arches
+          # Architecture: all packages — identical output on all arches
           - package: morse-firmware
             arch:
               name: arm64
           - package: morse_driver-dkms
             arch:
               name: arm64
+          - package: morse-firmware
+            arch:
+              name: armhf
+          - package: morse_driver-dkms
+            arch:
+              name: armhf
           # Ubuntu jammy lacks dh-dkms, maybe revisit
           - distro: jammy
             package: morse_driver-dkms
@@ -38,10 +49,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+
       - name: Build
         uses: devcontainers/ci@v0.3
         with:
           configFile: .devcontainer/${{ matrix.distro }}/devcontainer.json
+          platform: ${{ matrix.arch.platform }}
           push: never
           runCmd: |
             set -e
