@@ -1,6 +1,6 @@
 # morse_driver
 
-Debian packaging for [Gateworks/morse_driver](https://github.com/Gateworks/morse_driver) (fork of [MorseMicro/morse_driver](https://github.com/MorseMicro/morse_driver)).
+Debian packaging for [MorseMicro/morse_driver](https://github.com/MorseMicro/morse_driver).
 
 ## How it works
 
@@ -26,7 +26,7 @@ dpkg-buildpackage -us -uc
 
 - **Source package**: morse-driver
 - **Binary package**: morse-driver-dkms
-- **Upstream**: Gateworks fork with kernel 6.14/6.15/6.16 compatibility fixes
+- **Upstream**: MorseMicro official driver repository
 - **Bus transports enabled**: SDIO, SPI, USB
 - **Features enabled**: user access, vendor commands, monitor mode, debugfs
 

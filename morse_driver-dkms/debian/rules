@@ -3,8 +3,9 @@
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
-UPSTREAM_GIT = https://github.com/Gateworks/morse_driver.git
-UPSTREAM_BRANCH = 1.16.4-gateworks
+UPSTREAM_GIT = https://github.com/MorseMicro/morse_driver.git
+# Git tag
+UPSTREAM_BRANCH = 1.17.8
 ORIG_TARBALL = ../morse-driver_$(VERSION).orig.tar.gz
 
 %:

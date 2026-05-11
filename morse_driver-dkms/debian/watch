@@ -1,10 +1,8 @@
 version=4
 
-# Upstream is the Gateworks fork of Morse Micro's morse_driver.
-# Versions correspond to branch names (e.g. 1.16.4-gateworks).
-# uscan cannot automatically track new versions.
-# Manual updates are required when a new upstream branch is created.
+# Upstream is Morse Micro's morse_driver.
+# Versions correspond to tag names (e.g. 1.17.8).
 
 opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%morse-driver-$1.tar.gz%" \
-  https://github.com/Gateworks/morse_driver/tags \
+  https://github.com/MorseMicro/morse_driver/tags \
   (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@

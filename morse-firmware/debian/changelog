@@ -1,3 +1,9 @@
+morse-firmware (1.17.8-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 11 May 2026 00:00:00 +0000
+
 morse-firmware (1.16.4-1) unstable; urgency=medium
 
   * Initial packaging.
