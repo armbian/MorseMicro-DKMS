@@ -12,8 +12,8 @@ Build-Depends:
  pkg-config,
 Standards-Version: 4.6.2
 Homepage: https://github.com/MorseMicro/hostap
-Vcs-Git: https://github.com/vidplace7/Deb-MorseMicro.git [hostap]
-Vcs-Browser: https://github.com/vidplace7/Deb-MorseMicro/tree/main/hostap
+Vcs-Git: https://github.com/armbian/MorseMicro-DKMS.git [hostap_s1g]
+Vcs-Browser: https://github.com/armbian/MorseMicro-DKMS/tree/main/hostap_s1g
 Rules-Requires-Root: no
 
 Package: hostapd-s1g

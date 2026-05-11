@@ -6,9 +6,9 @@ Build-Depends:
  debhelper-compat (= 13),
  dh-dkms,
 Standards-Version: 4.6.2
-Homepage: https://github.com/Gateworks/morse_driver
-Vcs-Git: https://github.com/vidplace7/Deb-MorseMicro.git [morse_driver]
-Vcs-Browser: https://github.com/vidplace7/Deb-MorseMicro/tree/main/morse_driver
+Homepage: https://github.com/MorseMicro/morse_driver
+Vcs-Git: https://github.com/armbian/MorseMicro-DKMS.git [morse_driver-dkms]
+Vcs-Browser: https://github.com/armbian/MorseMicro-DKMS/tree/main/morse_driver-dkms
 Rules-Requires-Root: no
 
 Package: morse-driver-dkms
@@ -20,8 +20,7 @@ Recommends:
  morse-firmware,
 Description: Morse Micro 802.11ah (Wi-Fi HaLow) wireless driver - DKMS source
  Out-of-tree kernel driver for Morse Micro Wi-Fi HaLow (802.11ah) wireless
- chipsets, including MM6108 and MM8108. This is the Gateworks fork with
- additional kernel compatibility fixes.
+ chipsets, including MM6108 and MM8108.
  .
  The driver supports SDIO, SPI, and USB bus transports. It requires firmware
  files from the morse-firmware package to be installed in /lib/firmware/morse/.
