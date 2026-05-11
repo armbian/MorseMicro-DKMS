@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: morse_driver
-Upstream-Contact: Gateworks <https://github.com/Gateworks/morse_driver/issues>
-Source: https://github.com/Gateworks/morse_driver
+Upstream-Contact: MorseMicro <https://github.com/MorseMicro/morse_driver/issues>
+Source: https://github.com/MorseMicro/morse_driver
 
 Files: *
 Copyright: 2020-2025 Morse Micro Pty. Ltd.

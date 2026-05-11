@@ -6,8 +6,8 @@ Build-Depends:
  debhelper-compat (= 13),
 Standards-Version: 4.6.2
 Homepage: https://github.com/MorseMicro/morse-firmware
-Vcs-Git: https://github.com/vidplace7/Deb-MorseMicro.git [morse-firmware]
-Vcs-Browser: https://github.com/vidplace7/Deb-MorseMicro/tree/main/morse-firmware
+Vcs-Git: https://github.com/armbian/MorseMicro-DKMS.git [morse-firmware]
+Vcs-Browser: https://github.com/armbian/MorseMicro-DKMS/tree/main/morse-firmware
 Rules-Requires-Root: no
 
 Package: morse-firmware
