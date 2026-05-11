@@ -3,7 +3,9 @@
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
-UPSTREAM_BRANCH = 1.16
+# UPSTREAM_BRANCH = 1.17
+# MorseMicro did not publish a 1.17 branch. Pin to commit for now.
+UPSTREAM_BRANCH = fd41e1cffa7ab3cda88503f37e1cb05a3098be31
 ORIG_TARBALL = ../morse-firmware_$(VERSION).orig.tar.gz
 
 %:
@@ -19,5 +21,5 @@ override_dh_auto_clean:
 
 get-orig-source:
 	wget -O $(ORIG_TARBALL) \
-		https://github.com/MorseMicro/morse-firmware/archive/refs/heads/$(UPSTREAM_BRANCH).tar.gz
+		https://github.com/MorseMicro/morse-firmware/archive/$(UPSTREAM_BRANCH).tar.gz
 	@echo "Created $(ORIG_TARBALL)"

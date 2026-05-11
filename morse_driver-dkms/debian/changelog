@@ -1,3 +1,10 @@
+morse-driver (1.17.8-1) unstable; urgency=medium
+
+  * Switch back to official MorseMicro releases.
+  * New upstream release.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 11 May 2026 00:00:00 +0000
+
 morse-driver (1.16.4+gateworks-1) unstable; urgency=medium
 
   * Initial DKMS packaging of Gateworks fork.

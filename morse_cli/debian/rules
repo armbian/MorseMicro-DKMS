@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=-lto
-export DEB_CFLAGS_MAINT_APPEND = -Wno-error=unused-result -Wno-error=discarded-qualifiers
+export DEB_CFLAGS_MAINT_APPEND = -Wno-error=unused-result -Wno-error=discarded-qualifiers -Wno-error=maybe-uninitialized
 
 %:
 	dh $@
