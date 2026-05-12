@@ -70,24 +70,38 @@ jobs:
         run: |
           sed -i -E "1s/\(([^)]+)\)/(\1~${distro})/" debian/changelog
 
-      - name: Build
+      - name: Build Container
         uses: devcontainers/ci@v0.3
         with:
           configFile: .devcontainer/${{ matrix.distro }}/devcontainer.json
           platform: ${{ matrix.arch.platform }}
           push: never
-          runCmd: |
-            set -e
-            cd ${{ matrix.package }}
 
-            # Fetch upstream source tarball
-            if grep -q '^get-orig-source:' debian/rules; then
-              make -f debian/rules get-orig-source
-            fi
-            origtargz --unpack=yes
+      # Workaround devcontainer/ci runCmd platform issues
+      - name: Load container
+        run: |
+          skopeo copy oci-archive:/tmp/output.tar docker-daemon:mm-devcontainer:${{ matrix.distro }}
 
-            # Build unsigned packages
-            dpkg-buildpackage -us -uc
+      - name: Build Packages
+        run: |
+          docker run --rm \
+            -v .:/workspace \
+            -w /workspace \
+            --platform ${{ matrix.arch.platform }} \
+            mm-devcontainer:${{ matrix.distro }} \
+            bash -c "
+              set -e
+              cd ${{ matrix.package }}
+
+              # Fetch upstream source tarball
+              if grep -q '^get-orig-source:' debian/rules; then
+                make -f debian/rules get-orig-source
+              fi
+              origtargz --unpack=yes
+
+              # Build unsigned packages
+              dpkg-buildpackage -us -uc
+            "
 
       - name: List files
         run: ls -l *.deb *.buildinfo *.changes
