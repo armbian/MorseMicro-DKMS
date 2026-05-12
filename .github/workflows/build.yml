@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_call:
 
 jobs:
   build:
@@ -12,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distro: [forky, trixie, bookworm, resolute, noble, jammy]
+        distro: [forky, trixie, bookworm, resolute, noble]
         package: [hostap_s1g, morse_cli, morse_driver-dkms, morse-firmware]
         arch:
           - runner: ubuntu-24.04
@@ -38,10 +39,6 @@ jobs:
           - package: morse_driver-dkms
             arch:
               name: armhf
-          # Ubuntu jammy lacks dh-dkms, maybe revisit
-          - distro: jammy
-            package: morse_driver-dkms
-
 
     name: ${{ matrix.package }} (${{ matrix.distro }}, ${{ matrix.arch.name }})
 
@@ -51,6 +48,14 @@ jobs:
 
       - uses: docker/setup-qemu-action@v4
       - uses: docker/setup-buildx-action@v4
+
+      - name: Include distro in release version
+        working-directory: ${{ matrix.package }}
+        env:
+          distro: ${{ matrix.distro }}
+        # Rewrite the Debian changelog to append the '~distro' to the latest version (line 1).
+        run: |
+          sed -i -E "1s/\(([^)]+)\)/(\1~${distro})/" debian/changelog
 
       - name: Build
         uses: devcontainers/ci@v0.3
@@ -70,6 +75,9 @@ jobs:
 
             # Build unsigned packages
             dpkg-buildpackage -us -uc
+
+      - name: List files
+        run: ls -l *.deb *.buildinfo *.changes
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7

@@ -1,0 +1,32 @@
+on:
+  workflow_dispatch:
+    inputs:
+      # TODO: Parse the version from morse_driver-dkms `debian/changelog` instead of asking the maintainer.
+      version:
+        description: 'Release version (e.g. 0.17.8-1)'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    name: Release ${{ github.event.inputs.version }}
+  
+    steps:
+      - uses: ./.github/workflows/build.yml
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          merge-multiple: true
+      
+      - name: Create Draft Release
+        # Create a draft release that should be tested / promoted by a human.
+        uses: softprops/action-gh-release@v3
+        id: create_release
+        with:
+          draft: true
+          prerelease: true
+          name: Armbian MorseMicro ${{ github.event.inputs.version }}
+          tag_name: ${{ github.event.inputs.version }}
+          files: artifacts/*.deb
