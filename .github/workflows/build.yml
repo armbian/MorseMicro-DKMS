@@ -25,6 +25,9 @@ jobs:
           - runner: ubuntu-24.04-arm
             name: armhf
             platform: linux/arm/v7
+          - runner: ubuntu-24.04-arm
+            name: riscv64
+            platform: linux/riscv64
         exclude:
           # Architecture: all packages — identical output on all arches
           - package: morse-firmware
@@ -39,6 +42,16 @@ jobs:
           - package: morse_driver-dkms
             arch:
               name: armhf
+          - package: morse-firmware
+            arch:
+              name: riscv64
+          - package: morse_driver-dkms
+            arch:
+              name: riscv64
+          # Bookworm doesn't support riscv64
+          - distro: bookworm
+            arch:
+              name: riscv64
 
     name: ${{ matrix.package }} (${{ matrix.distro }}, ${{ matrix.arch.name }})
 
