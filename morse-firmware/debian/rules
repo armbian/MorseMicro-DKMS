@@ -5,7 +5,7 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
 # UPSTREAM_BRANCH = 1.17
 # MorseMicro did not publish a 1.17 branch. Pin to commit for now.
-UPSTREAM_BRANCH = fd41e1cffa7ab3cda88503f37e1cb05a3098be31
+UPSTREAM_BRANCH = ea18605f53387281c1029ea9eb8e0de2bda7bae2
 ORIG_TARBALL = ../morse-firmware_$(VERSION).orig.tar.gz
 
 %:
