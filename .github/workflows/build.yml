@@ -83,10 +83,13 @@ jobs:
           skopeo copy oci-archive:/tmp/output.tar docker-daemon:mm-devcontainer:${{ matrix.distro }}
 
       - name: Build Packages
+        env:
+          DEB_BUILD_OPTIONS: "noautodbgsym"
         run: |
           docker run --rm \
             -v .:/workspace \
             -w /workspace \
+            -e DEB_BUILD_OPTIONS \
             --platform ${{ matrix.arch.platform }} \
             mm-devcontainer:${{ matrix.distro }} \
             bash -c "
