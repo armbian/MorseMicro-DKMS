@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
+UPSTREAM_GIT = https://github.com/MorseMicro/morse_driver.git
+# Git tag
+UPSTREAM_BRANCH = 1.17.9
+ORIG_TARBALL = ../mm6108-driver_$(VERSION).orig.tar.gz
+
+%:
+	dh $@ --with dkms
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+
+override_dh_auto_test:
+
+override_dh_auto_install:
+	install -d debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)
+	cp -a Makefile Kconfig *.c *.h LICENSE \
+		debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/
+	cp -a dot11ah debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/
+	cp -a mmrc debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/
+	cp -a mmrc-submodule debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/
+	echo 'ccflags-y += -Wno-error' >> debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/Makefile
+
+override_dh_auto_clean:
+
+get-orig-source:
+	rm -rf ../mm6108-driver-$(VERSION)
+	git clone --depth=1 --branch $(UPSTREAM_BRANCH) --recurse-submodules \
+		$(UPSTREAM_GIT) ../mm6108-driver-$(VERSION)
+	tar czf $(ORIG_TARBALL) \
+		--exclude='.git*' \
+		-C .. mm6108-driver-$(VERSION)
+	rm -rf ../mm6108-driver-$(VERSION)
+	@echo "Created $(ORIG_TARBALL)"

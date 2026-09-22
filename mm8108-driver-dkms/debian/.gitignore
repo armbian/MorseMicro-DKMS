@@ -1,0 +1,7 @@
+.debhelper/
+debhelper-build-stamp
+files
+mm8108-driver-dkms/
+*.debhelper.log
+*.debhelper
+*.substvars

@@ -1,0 +1,7 @@
+# Ignore everything (upstream source unpacked by origtargz)
+*
+
+# Keep packaging and repo files
+!.gitignore
+!debian/
+!debian/**

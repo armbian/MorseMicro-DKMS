@@ -1,11 +1,11 @@
-# morse_driver
+# mm6108-driver-dkms
 
 Debian packaging for [MorseMicro/morse_driver](https://github.com/MorseMicro/morse_driver).
 
 ## How it works
 
 This directory contains only the `debian/` packaging files. The upstream
-source (`morse-driver_<version>.orig.tar.gz`) must be created with
+source (`mm6108-driver_<version>.orig.tar.gz`) must be created with
 `get-orig-source` (because upstream uses git submodules that GitHub tarballs
 omit), then unpacked into the working tree with `origtargz --unpack`.
 
@@ -24,12 +24,12 @@ dpkg-buildpackage -us -uc
 
 ## Package details
 
-- **Source package**: morse-driver
-- **Binary package**: morse-driver-dkms
+- **Source package**: mm6108-driver
+- **Binary package**: mm6108-driver-dkms
 - **Upstream**: MorseMicro official driver repository
 - **Bus transports enabled**: SDIO, SPI, USB
 - **Features enabled**: user access, vendor commands, monitor mode, debugfs
 
 The package uses DKMS to automatically build the `morse` and `dot11ah` kernel
 modules for each installed kernel version. Firmware files from the
-`morse-firmware` package are required for operation.
+`mm6108-firmware` package are required for operation.

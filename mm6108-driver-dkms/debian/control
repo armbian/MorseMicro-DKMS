@@ -1,0 +1,37 @@
+Source: mm6108-driver
+Section: kernel
+Priority: optional
+Maintainer: Austin <vidplace7@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-dkms,
+Standards-Version: 4.6.2
+Homepage: https://github.com/MorseMicro/morse_driver
+Vcs-Git: https://github.com/armbian/MorseMicro-DKMS.git [mm6108-driver-dkms]
+Vcs-Browser: https://github.com/armbian/MorseMicro-DKMS/tree/main/mm6108-driver-dkms
+Rules-Requires-Root: no
+
+Package: mm6108-driver-dkms
+Architecture: all
+Depends:
+ ${misc:Depends},
+ dkms,
+Recommends:
+ mm6108-firmware,
+Provides:
+ morse-driver-dkms,
+Replaces:
+ morse-driver-dkms,
+Breaks:
+ morse-driver-dkms,
+Conflicts:
+ mm8108-driver-dkms,
+Description: Morse Micro MM6108 802.11ah (Wi-Fi HaLow) wireless driver - DKMS source
+ Out-of-tree kernel driver for the Morse Micro MM6108 Wi-Fi HaLow (802.11ah)
+ wireless chipset.
+ .
+ The driver supports SDIO, SPI, and USB bus transports. It requires firmware
+ files from the mm6108-firmware package to be installed in /lib/firmware/morse/.
+ .
+ This package provides the source code for the morse kernel modules and uses
+ DKMS to automatically build them for each installed kernel version.

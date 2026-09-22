@@ -4,6 +4,6 @@ version=4
 # (e.g. 1.14, 1.15, 1.16). uscan cannot automatically track new versions.
 # Manual updates are required when a new upstream branch is created.
 
-opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%morse-firmware-$1.tar.gz%" \
+opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%mm6108-firmware-$1.tar.gz%" \
   https://github.com/MorseMicro/morse-firmware/tags \
   (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@
