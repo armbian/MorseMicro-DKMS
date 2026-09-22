@@ -1,8 +1,10 @@
 version=4
 
-# Upstream is Morse Micro's morse_driver.
-# Versions correspond to tag names (e.g. 1.17.8).
+# Upstream is Morse Micro's morse_driver, which tags the MM6108 and MM8108
+# series separately (e.g. mm8108-2.1.0). This package tracks the MM8108
+# series; the Debian upstream version is the tag with the 'mm8108-' prefix
+# stripped.
 
-opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%mm8108-driver-$1.tar.gz%" \
+opts="filenamemangle=s%(?:.*?)?mm8108-@ANY_VERSION@@ARCHIVE_EXT@%mm8108-driver-$1.tar.gz%" \
   https://github.com/MorseMicro/morse_driver/tags \
-  (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@
+  (?:.*?/)?mm8108-@ANY_VERSION@@ARCHIVE_EXT@

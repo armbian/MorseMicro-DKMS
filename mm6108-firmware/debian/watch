@@ -1,9 +1,10 @@
 version=4
 
-# Upstream does not use tags or releases; versions correspond to branch names
-# (e.g. 1.14, 1.15, 1.16). uscan cannot automatically track new versions.
-# Manual updates are required when a new upstream branch is created.
+# Upstream tags the MM6108 and MM8108 series separately (e.g. mm6108-2.0.1),
+# with both chip tags pointing at the same firmware release commit.
+# The 2.1.x tags have not been pushed, so debian/rules pins the release commit instead;
+# uscan will see the mm6108- tags once upstream publishes them.
 
-opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%mm6108-firmware-$1.tar.gz%" \
+opts="filenamemangle=s%(?:.*?)?mm6108-@ANY_VERSION@@ARCHIVE_EXT@%mm6108-firmware-$1.tar.gz%" \
   https://github.com/MorseMicro/morse-firmware/tags \
-  (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@
+  (?:.*?/)?mm6108-@ANY_VERSION@@ARCHIVE_EXT@

@@ -37,3 +37,6 @@ origtargz --unpack=yes && dpkg-buildpackage -us -uc
 - **Binary package**: morse-cli
 - **Upstream binary**: morse_cli
 - **Transports enabled**: NL80211, UART SLIP, TCP SLIP
+- **Upstream tags**: `mm8108-<version>` (upstream tags the MM6108 and
+  MM8108 series separately; `debian/watch` follows the MM8108 series and
+  strips the `mm8108-` prefix from the Debian upstream version)

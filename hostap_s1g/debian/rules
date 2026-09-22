@@ -3,8 +3,9 @@
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
-# Git tag
-UPSTREAM_BRANCH = 1.17.9
+# Git tag: upstream tags the MM6108 and MM8108 series separately, and this
+# package tracks the MM8108 series (see debian/watch).
+UPSTREAM_TAG = mm8108-$(VERSION)
 ORIG_TARBALL = ../hostap-s1g_$(VERSION).orig.tar.gz
 
 %:
@@ -48,5 +49,5 @@ override_dh_auto_clean:
 
 get-orig-source:
 	wget -O $(ORIG_TARBALL) \
-		https://github.com/MorseMicro/hostap/archive/$(UPSTREAM_BRANCH).tar.gz
+		https://github.com/MorseMicro/hostap/archive/$(UPSTREAM_TAG).tar.gz
 	@echo "Created $(ORIG_TARBALL)"

@@ -4,8 +4,9 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
 UPSTREAM_GIT = https://github.com/MorseMicro/morse_driver.git
-# Git tag
-UPSTREAM_BRANCH = 1.17.9
+# Git tag: upstream tags the MM6108 and MM8108 series separately, and this
+# package tracks the MM6108 series (see debian/watch).
+UPSTREAM_TAG = mm6108-$(VERSION)
 ORIG_TARBALL = ../mm6108-driver_$(VERSION).orig.tar.gz
 
 %:
@@ -30,7 +31,7 @@ override_dh_auto_clean:
 
 get-orig-source:
 	rm -rf ../mm6108-driver-$(VERSION)
-	git clone --depth=1 --branch $(UPSTREAM_BRANCH) --recurse-submodules \
+	git clone --depth=1 --branch $(UPSTREAM_TAG) --recurse-submodules \
 		$(UPSTREAM_GIT) ../mm6108-driver-$(VERSION)
 	tar czf $(ORIG_TARBALL) \
 		--exclude='.git*' \

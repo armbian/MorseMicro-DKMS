@@ -1,3 +1,18 @@
+mm8108-driver (2.1.0-1) unstable; urgency=medium
+
+  * New upstream release (upstream tag mm8108-2.1.0).
+  * debian/watch: track the per-chip 'mm8108-' tags; upstream now tags the
+    MM6108 and MM8108 series separately.
+  * debian/watch: match the archive extension in filenamemangle so the
+    downloaded tarball is not named mm8108-driver-<version>.tar.gz.tar.gz.
+  * debian/rules: clone the 'mm8108-<upstream version>' tag in
+    get-orig-source, derived from the changelog version.
+  * debian/copyright: declare the upstream license as GPL-2.0-or-later to
+    match the SPDX headers in the upstream sources, and extend the copyright
+    years to 2026.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 21 Sep 2026 00:00:00 +0000
+
 mm8108-driver (1.17.9-2) unstable; urgency=medium
 
   * Split morse-driver into per-chip packages; this is the MM8108 variant.

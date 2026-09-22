@@ -1,3 +1,14 @@
+morse-cli (2.1.0-1) unstable; urgency=medium
+
+  * New upstream release (upstream tag mm8108-2.1.0).
+  * debian/watch: track the per-chip 'mm8108-' tags; upstream now tags the
+    MM6108 and MM8108 series separately.
+  * debian/watch: match the archive extension in filenamemangle so the
+    downloaded tarball is not named morse-cli-<version>.tar.gz.tar.gz.
+  * debian/copyright: extend upstream copyright years to 2026.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 21 Sep 2026 00:00:00 +0000
+
 morse-cli (1.17.8-1) unstable; urgency=medium
 
   * New upstream release.
