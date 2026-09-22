@@ -12,6 +12,16 @@ mm8108-driver (2.1.0-2) unstable; urgency=medium
   * debian/mm8108-driver-dkms.dkms: build with CONFIG_MORSE_POWERSAVE_MODE=0
     to disable power save by default (the 'enable_ps' module parameter);
     upstream defaults to fully enabled.
+  * Mark Morse Micro interfaces unmanaged by NetworkManager. NetworkManager
+    claims them as ordinary Wi-Fi and hands them to the stock wpa_supplicant,
+    which has no S1G support, while randomising the MAC on every scan; it has
+    no way to drive the S1G supplicant because it hardcodes the D-Bus name
+    fi.w1.wpa_supplicant1. Ships
+    /usr/lib/udev/rules.d/90-morse-nm-unmanaged.rules, setting NM_UNMANAGED=1
+    for the morse_usb, morse_sdio and morse_spi drivers. This is the
+    mechanism NetworkManager documents for the purpose and only sets a
+    default: 'nmcli device set <iface> managed yes' still overrides it, which
+    would not be true of an unmanaged-devices entry in NetworkManager.conf.
 
  -- Austin <vidplace7@gmail.com>  Tue, 22 Sep 2026 00:00:00 +0000
 

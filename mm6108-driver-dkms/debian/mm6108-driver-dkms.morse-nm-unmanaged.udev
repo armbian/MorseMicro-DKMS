@@ -1,0 +1,20 @@
+# Do not modify this file, it will get overwritten on updates.
+# To override or extend the rules place a file in /etc/udev/rules.d
+
+# Morse Micro Wi-Fi HaLow (802.11ah) interfaces have to be driven by
+# wpa_supplicant_s1g, from the wpa-supplicant-s1g package. Left to itself
+# NetworkManager claims them as ordinary Wi-Fi, hands them to the stock
+# wpa_supplicant (which has no S1G support) and randomises the MAC on every
+# scan. NetworkManager has no way to talk to the S1G supplicant: it hardcodes
+# the D-Bus name fi.w1.wpa_supplicant1.
+#
+# This sets a default, not a lock. To let NetworkManager manage a device
+# anyway:
+#     nmcli device set <iface> managed yes
+
+SUBSYSTEM!="net", GOTO="morse_unmanaged_end"
+ACTION!="add|change|move", GOTO="morse_unmanaged_end"
+
+ENV{ID_NET_DRIVER}=="morse_usb|morse_sdio|morse_spi", ENV{NM_UNMANAGED}="1"
+
+LABEL="morse_unmanaged_end"
