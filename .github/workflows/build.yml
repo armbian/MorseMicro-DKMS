@@ -14,7 +14,13 @@ jobs:
       fail-fast: false
       matrix:
         distro: [forky, trixie, bookworm, resolute, noble]
-        package: [hostap_s1g, morse_cli, morse_driver-dkms, morse-firmware]
+        package:
+          - hostap_s1g
+          - morse_cli
+          - mm6108-driver-dkms
+          - mm6108-firmware
+          - mm8108-driver-dkms
+          - mm8108-firmware
         arch:
           - runner: ubuntu-24.04
             name: amd64
@@ -30,22 +36,40 @@ jobs:
             platform: linux/riscv64
         exclude:
           # Architecture: all packages — identical output on all arches
-          - package: morse-firmware
+          - package: mm6108-driver-dkms
             arch:
               name: arm64
-          - package: morse_driver-dkms
+          - package: mm6108-firmware
             arch:
               name: arm64
-          - package: morse-firmware
+          - package: mm8108-driver-dkms
+            arch:
+              name: arm64
+          - package: mm8108-firmware
+            arch:
+              name: arm64
+          - package: mm6108-driver-dkms
             arch:
               name: armhf
-          - package: morse_driver-dkms
+          - package: mm6108-firmware
             arch:
               name: armhf
-          - package: morse-firmware
+          - package: mm8108-driver-dkms
+            arch:
+              name: armhf
+          - package: mm8108-firmware
+            arch:
+              name: armhf
+          - package: mm6108-driver-dkms
             arch:
               name: riscv64
-          - package: morse_driver-dkms
+          - package: mm6108-firmware
+            arch:
+              name: riscv64
+          - package: mm8108-driver-dkms
+            arch:
+              name: riscv64
+          - package: mm8108-firmware
             arch:
               name: riscv64
           # Bookworm doesn't support riscv64

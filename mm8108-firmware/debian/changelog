@@ -1,0 +1,26 @@
+mm8108-firmware (1.17.9-2) unstable; urgency=medium
+
+  * Split morse-firmware into per-chip packages; this is the MM8108 variant.
+  * Rename source and binary package to mm8108-firmware.
+  * Conflict with mm6108-firmware; the two chip variants are mutually
+    exclusive.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 21 Sep 2026 00:00:00 +0000
+
+morse-firmware (1.17.9-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Austin <vidplace7@gmail.com>  Sun, 21 Jun 2026 00:00:00 +0000
+
+morse-firmware (1.17.8-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 11 May 2026 00:00:00 +0000
+
+morse-firmware (1.16.4-1) unstable; urgency=medium
+
+  * Initial packaging.
+
+ -- Austin <vidplace7@gmail.com>  Fri, 03 Apr 2026 00:00:00 +0000

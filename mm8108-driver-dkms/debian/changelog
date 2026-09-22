@@ -1,3 +1,15 @@
+mm8108-driver (1.17.9-2) unstable; urgency=medium
+
+  * Split morse-driver into per-chip packages; this is the MM8108 variant.
+  * Rename source package to mm8108-driver and binary package to
+    mm8108-driver-dkms.
+  * Rename the DKMS module tree to /usr/src/mm8108-driver-<version>.
+  * Recommend mm8108-firmware instead of morse-firmware.
+  * Conflict with mm6108-driver-dkms; the two chip variants are mutually
+    exclusive.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 21 Sep 2026 00:00:00 +0000
+
 morse-driver (1.17.9-1) unstable; urgency=medium
 
   * New upstream release.

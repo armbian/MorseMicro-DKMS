@@ -1,7 +1,6 @@
 .debhelper/
 debhelper-build-stamp
 files
-morse-driver-dkms/
+mm8108-firmware/
 *.debhelper.log
-*.debhelper
 *.substvars

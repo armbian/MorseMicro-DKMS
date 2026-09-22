@@ -1,0 +1,32 @@
+mm6108-driver (1.17.9-2) unstable; urgency=medium
+
+  * Split morse-driver into per-chip packages; this is the MM6108 variant.
+  * Rename source package to mm6108-driver and binary package to
+    mm6108-driver-dkms.
+  * Rename the DKMS module tree to /usr/src/mm6108-driver-<version>.
+  * Recommend mm6108-firmware instead of morse-firmware.
+  * Conflict with mm8108-driver-dkms; the two chip variants are mutually
+    exclusive.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 21 Sep 2026 00:00:00 +0000
+
+morse-driver (1.17.9-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Austin <vidplace7@gmail.com>  Sun, 21 Jun 2026 00:00:00 +0000
+
+morse-driver (1.17.8-1) unstable; urgency=medium
+
+  * Switch back to official MorseMicro releases.
+  * New upstream release.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 11 May 2026 00:00:00 +0000
+
+morse-driver (1.16.4+gateworks-1) unstable; urgency=medium
+
+  * Initial DKMS packaging of Gateworks fork.
+  * Includes kernel 6.14/6.15/6.16 compatibility fixes.
+  * Enables SDIO, SPI, and USB bus transports.
+
+ -- Austin <vidplace7@gmail.com>  Sat, 04 Apr 2026 00:00:00 +0000

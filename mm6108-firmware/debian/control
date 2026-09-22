@@ -1,0 +1,33 @@
+Source: mm6108-firmware
+Section: non-free-firmware/kernel
+Priority: optional
+Maintainer: Austin <vidplace7@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.6.2
+Homepage: https://github.com/MorseMicro/morse-firmware
+Vcs-Git: https://github.com/armbian/MorseMicro-DKMS.git [mm6108-firmware]
+Vcs-Browser: https://github.com/armbian/MorseMicro-DKMS/tree/main/mm6108-firmware
+Rules-Requires-Root: no
+
+Package: mm6108-firmware
+Architecture: all
+Depends:
+ ${misc:Depends},
+Provides:
+ morse-firmware,
+Replaces:
+ morse-firmware,
+Breaks:
+ morse-firmware,
+Conflicts:
+ mm8108-firmware,
+Description: Morse Micro MM6108 Wi-Fi HaLow firmware and board configuration files
+ Binary firmware images and Board Configuration Files (BCFs) required
+ for operation of modules based on Morse Micro's MM6108 Wi-Fi HaLow chip.
+ .
+ BCFs are included for Morse Micro reference designs as well as modules
+ from partners including AzureWave, NetPrisma, and Quectel.
+ .
+ Files are installed to /lib/firmware/morse/ for use by the Morse Micro
+ kernel driver.

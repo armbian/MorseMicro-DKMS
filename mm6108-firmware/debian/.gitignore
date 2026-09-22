@@ -1,0 +1,6 @@
+.debhelper/
+debhelper-build-stamp
+files
+mm6108-firmware/
+*.debhelper.log
+*.substvars

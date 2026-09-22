@@ -1,0 +1,8 @@
+version=4
+
+# Upstream is Morse Micro's morse_driver.
+# Versions correspond to tag names (e.g. 1.17.8).
+
+opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%mm6108-driver-$1.tar.gz%" \
+  https://github.com/MorseMicro/morse_driver/tags \
+  (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@
