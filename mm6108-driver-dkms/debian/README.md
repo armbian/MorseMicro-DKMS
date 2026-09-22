@@ -32,6 +32,9 @@ dpkg-buildpackage -us -uc
   strips the `mm6108-` prefix from the Debian upstream version)
 - **Bus transports enabled**: SDIO, SPI, USB
 - **Features enabled**: user access, vendor commands, monitor mode, debugfs
+- **Build-time defaults**: 4-byte SDIO bulk alignment, country `US`, power
+  save disabled (override the latter two at load time with the `country` and
+  `enable_ps` module parameters)
 
 The package uses DKMS to automatically build the `morse` and `dot11ah` kernel
 modules for each installed kernel version. Firmware files from the

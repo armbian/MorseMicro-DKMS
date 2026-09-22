@@ -30,7 +30,11 @@ dpkg-buildpackage -us -uc
 - **Upstream tags**: `mm8108-<version>` (upstream tags the MM6108 and
   MM8108 series separately; this package follows the MM8108 series and
   strips the `mm8108-` prefix from the Debian upstream version)
-- **S1G build options**: CONFIG_IEEE80211AH, CONFIG_S1G_TWT, CONFIG_MORSE_STANDBY_MODE, CONFIG_MORSE_KEEP_ALIVE_OFFLOAD
+- **Build options**: upstream `defconfig` (which already enables the S1G
+  features, including TWT, standby mode and keep-alive offload), plus
+  CONFIG_IEEE80211AH for hostapd, and 802.11s mesh (CONFIG_MESH) and the
+  PEAP, MD5, MSCHAPv2, TLS, TLS 1.3, TTLS, GTC and PWD EAP methods for
+  wpa_supplicant
 
 Binaries are installed with `-s1g` suffix to allow coexistence with stock
 Debian hostapd and wpasupplicant packages.

@@ -1,3 +1,17 @@
+hostap-s1g (2.1.0-2) unstable; urgency=medium
+
+  * debian/rules: enable 802.11s mesh support (CONFIG_MESH) in
+    wpa_supplicant_s1g.
+  * debian/rules: enable the PEAP, MD5, MSCHAPv2, TLS (including TLS 1.3),
+    TTLS, GTC and PWD EAP methods in wpa_supplicant_s1g so it can join
+    WPA-Enterprise (802.1X) networks.
+  * debian/rules: stop appending CONFIG_IEEE80211AH, CONFIG_S1G_TWT,
+    CONFIG_MORSE_STANDBY_MODE and CONFIG_MORSE_KEEP_ALIVE_OFFLOAD to the
+    wpa_supplicant configuration; the upstream defconfig already enables
+    them.
+
+ -- Austin <vidplace7@gmail.com>  Tue, 22 Sep 2026 00:00:00 +0000
+
 hostap-s1g (2.1.0-1) unstable; urgency=medium
 
   * New upstream release (upstream tag mm8108-2.1.0).
