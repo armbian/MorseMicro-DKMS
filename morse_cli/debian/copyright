@@ -4,7 +4,7 @@ Upstream-Contact: Morse Micro <https://www.morsemicro.com>
 Source: https://github.com/MorseMicro/morse_cli
 
 Files: *
-Copyright: 2020-2025 Morse Micro
+Copyright: 2020-2026 Morse Micro
 License: GPL-2.0-or-later
 
 Files: argtable3/*

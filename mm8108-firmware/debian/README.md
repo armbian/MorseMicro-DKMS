@@ -6,13 +6,13 @@ Debian packaging for [MorseMicro/morse-firmware](https://github.com/MorseMicro/m
 
 This directory contains only the `debian/` packaging files. The upstream
 source (`mm8108-firmware_<version>.orig.tar.gz`) must be created with
-`get-orig-source` (because upstream uses branch names instead of tags),
+`get-orig-source` (which downloads the pinned upstream release commit),
 then unpacked into the working tree with `origtargz --unpack`.
 
 ## Building
 
 ```bash
-# Create the orig tarball (downloads from the upstream branch)
+# Create the orig tarball (downloads the pinned upstream commit)
 make -f debian/rules get-orig-source
 
 # Unpack upstream source into the working tree
@@ -28,6 +28,11 @@ dpkg-buildpackage -us -uc
 - **Binary package**: mm8108-firmware
 - **Architecture**: all (arch-independent firmware blobs)
 - **Chips supported**: MM8108
+- **Upstream tags**: `mm8108-<version>` (upstream tags the MM6108 and
+  MM8108 series separately, both pointing at the same firmware release
+  commit). The 2.1.x tags were never pushed, so `debian/rules` pins the
+  release commit; switch `UPSTREAM_COMMIT` back to a tag once upstream
+  publishes one.
 - **BCF vendors included**: Morse Micro, AzureWave, NetPrisma, Quectel
 
 Firmware and Board Configuration Files (BCFs) are installed to

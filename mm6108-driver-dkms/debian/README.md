@@ -27,6 +27,9 @@ dpkg-buildpackage -us -uc
 - **Source package**: mm6108-driver
 - **Binary package**: mm6108-driver-dkms
 - **Upstream**: MorseMicro official driver repository
+- **Upstream tags**: `mm6108-<version>` (upstream tags the MM6108 and
+  MM8108 series separately; this package follows the MM6108 series and
+  strips the `mm6108-` prefix from the Debian upstream version)
 - **Bus transports enabled**: SDIO, SPI, USB
 - **Features enabled**: user access, vendor commands, monitor mode, debugfs
 

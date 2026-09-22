@@ -1,3 +1,17 @@
+mm6108-firmware (2.1.0-1) unstable; urgency=medium
+
+  * New upstream firmware release 2.1.
+  * debian/rules: upstream never pushed the mm6108-2.1 tag, so pin to the
+    "Firmware binaries for Release 2.1" commit
+    (ce39cefb5fd01ad689a0c0b043557d9c2a3167d8), as was done for 1.17.x.
+  * debian/watch: track the per-chip 'mm6108-' tags; upstream tags the
+    MM6108 and MM8108 series separately (both at the same release commit),
+    so the stale note about upstream having no tags is dropped.
+  * debian/watch: match the archive extension in filenamemangle so the
+    downloaded tarball is not named mm6108-firmware-<version>.tar.gz.tar.gz.
+
+ -- Austin <vidplace7@gmail.com>  Mon, 21 Sep 2026 00:00:00 +0000
+
 mm6108-firmware (1.17.9-2) unstable; urgency=medium
 
   * Split morse-firmware into per-chip packages; this is the MM6108 variant.

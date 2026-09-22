@@ -1,4 +1,9 @@
 version=4
-opts="filenamemangle=s%(?:.*?)?v?@ANY_VERSION@%morse-cli-$1.tar.gz%" \
+
+# Upstream tags the MM6108 and MM8108 series separately (e.g. mm8108-2.1.0).
+# This package tracks the MM8108 series; the Debian upstream version is the
+# tag with the 'mm8108-' prefix stripped.
+
+opts="filenamemangle=s%(?:.*?)?mm8108-@ANY_VERSION@@ARCHIVE_EXT@%morse-cli-$1.tar.gz%" \
   https://github.com/MorseMicro/morse_cli/tags \
-  (?:.*?/)?v?@ANY_VERSION@@ARCHIVE_EXT@
+  (?:.*?/)?mm8108-@ANY_VERSION@@ARCHIVE_EXT@
