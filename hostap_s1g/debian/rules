@@ -37,14 +37,19 @@ override_dh_auto_build:
 	cp hostapd/hostapd_cli.1 hostapd/hostapd_cli_s1g.1
 
 override_dh_auto_install:
-	# D-Bus policy and activation files for wpa_supplicant-s1g
-	install -D -m 0644 debian/wpa-supplicant-s1g.dbus-system-policy.conf \
-		debian/wpa-supplicant-s1g/usr/share/dbus-1/system.d/wpa-supplicant-s1g.conf
-	install -D -m 0644 debian/wpa-supplicant-s1g.dbus-system-service \
-		debian/wpa-supplicant-s1g/usr/share/dbus-1/system-services/fi.w1.wpa_supplicant1_s1g.service
+	# Binaries are installed from debian/*.install; upstream's 'make install'
+	# would additionally install unwanted files, so the step is disabled.
 
 override_dh_auto_test:
 	# No test suite available
+
+# wpa-supplicant-s1g.service is a bare daemon with a global control socket and
+# no interfaces attached; it is only useful once the admin adds one. Install it
+# but leave enabling it to them. The per-interface template unit
+# (wpa-supplicant-s1g@<iface>.service) is the normal way to bring up a link.
+override_dh_installsystemd:
+	dh_installsystemd -phostapd-s1g
+	dh_installsystemd -pwpa-supplicant-s1g --no-enable --no-start
 
 override_dh_auto_clean:
 	[ ! -f hostapd/.config ] || $(MAKE) -C hostapd clean

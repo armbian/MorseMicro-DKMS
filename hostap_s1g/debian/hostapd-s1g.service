@@ -2,6 +2,7 @@
 Description=IEEE 802.11 AP daemon with S1G (Wi-Fi HaLow) support
 Documentation=man:hostapd-s1g(8)
 After=network.target
+ConditionFileNotEmpty=/etc/hostapd-s1g/hostapd.conf
 
 [Service]
 Type=forking

@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Austin <vidplace7@gmail.com>
 Build-Depends:
  debhelper-compat (= 13),
- libdbus-1-dev,
  libnl-3-dev,
  libnl-genl-3-dev,
  libnl-route-3-dev,

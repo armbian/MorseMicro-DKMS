@@ -9,6 +9,43 @@ hostap-s1g (2.1.0-2) unstable; urgency=medium
     CONFIG_MORSE_STANDBY_MODE and CONFIG_MORSE_KEEP_ALIVE_OFFLOAD to the
     wpa_supplicant configuration; the upstream defconfig already enables
     them.
+  * Drop the D-Bus integration from wpa-supplicant-s1g; it never worked.
+    wpa_supplicant_s1g is built from the upstream defconfig, which leaves
+    CONFIG_CTRL_IFACE_DBUS_NEW commented out, so the binary has no D-Bus
+    code at all and rejects the '-u' flag. The package nevertheless shipped
+    a bus policy and an activation file for fi.w1.wpa_supplicant1_s1g, a
+    name that appears nowhere in the upstream sources, so the bus advertised
+    a service that could never be acquired and every client attempting to
+    reach it blocked for the full 25s activation timeout.
+    - debian/wpa-supplicant-s1g.dbus-system-policy.conf,
+      debian/wpa-supplicant-s1g.dbus-system-service: removed.
+    - debian/rules: drop the corresponding install steps.
+    - debian/control: drop the now-unused libdbus-1-dev build dependency.
+    Enabling D-Bus instead was considered and rejected: both NetworkManager
+    and WPAS_DBUS_NEW_SERVICE hardcode fi.w1.wpa_supplicant1, so the only
+    working configuration would contend with Debian's wpasupplicant for that
+    name. See debian/README.md.
+  * debian/wpa-supplicant-s1g.service: replace the D-Bus activation unit
+    with a plain daemon exposing a global control socket at
+    /run/wpa-supplicant-s1g/global (Type=simple, '-g'). The previous unit
+    was Type=dbus with BusName=fi.w1.wpa_supplicant1_s1g and ran the
+    supplicant with '-u', which merely printed the usage message and exited,
+    leaving an enabled unit that did nothing on every boot.
+  * debian/rules: do not enable or start wpa-supplicant-s1g.service on
+    install. Now that the unit runs a real daemon it would otherwise sit
+    idle with no interfaces attached; the per-interface template unit
+    wpa-supplicant-s1g@<iface>.service remains the normal way to bring up a
+    link. Hosts that had the old unit enabled will need to disable it if
+    they do not want the daemon.
+  * debian/README.md: document that NetworkManager cannot manage a HaLow
+    interface, why, and what to do instead.
+  * debian/hostapd-s1g.service: skip the unit unless
+    /etc/hostapd-s1g/hostapd.conf exists and is non-empty
+    (ConditionFileNotEmpty). The unit is enabled on install but the package
+    ships no AP configuration, so until an admin writes one it failed on
+    every boot; it is now skipped cleanly instead, and still starts by
+    itself once the configuration is in place. Matches the condition
+    Debian's own hostapd package uses.
 
  -- Austin <vidplace7@gmail.com>  Tue, 22 Sep 2026 00:00:00 +0000
 
