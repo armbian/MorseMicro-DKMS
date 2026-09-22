@@ -9,7 +9,35 @@ BUILT_MODULE_NAME[1]="dot11ah"
 BUILT_MODULE_LOCATION[1]="dot11ah/"
 DEST_MODULE_LOCATION[1]="/updates/dkms"
 
-MAKE[0]="make -C ${kernel_source_dir} M=${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build CONFIG_WLAN_VENDOR_MORSE=m CONFIG_MORSE_SDIO=y CONFIG_MORSE_SPI=y CONFIG_MORSE_USB=y CONFIG_MORSE_USER_ACCESS=y CONFIG_MORSE_VENDOR_COMMAND=y CONFIG_MORSE_MONITOR=y CONFIG_MORSE_DEBUGFS=y DEBUG=n MORSE_TRACE_PATH=${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build"
-CLEAN="make -C ${kernel_source_dir} M=${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build clean"
+# Where DKMS unpacks and builds the module tree for the kernel being targeted.
+morse_build_dir="${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build"
+
+morse_opts=(
+	CONFIG_WLAN_VENDOR_MORSE=m
+
+	# Bus transports
+	CONFIG_MORSE_SDIO=y
+	CONFIG_MORSE_SPI=y
+	CONFIG_MORSE_USB=y
+
+	# Features
+	CONFIG_MORSE_USER_ACCESS=y
+	CONFIG_MORSE_VENDOR_COMMAND=y
+	CONFIG_MORSE_MONITOR=y
+	CONFIG_MORSE_DEBUGFS=y
+
+	# Build-time defaults. Country and power save are overridable at load
+	# time with the `country` and `enable_ps` module parameters.
+	CONFIG_MORSE_SDIO_ALIGNMENT=4
+	CONFIG_MORSE_COUNTRY=US
+	CONFIG_MORSE_POWERSAVE_MODE=0
+
+	# Build settings
+	DEBUG=n
+	MORSE_TRACE_PATH=${morse_build_dir}
+)
+
+MAKE[0]="make -C ${kernel_source_dir} M=${morse_build_dir} KERNEL_SRC=${kernel_source_dir} ${morse_opts[*]}"
+CLEAN="make -C ${kernel_source_dir} M=${morse_build_dir} clean"
 
 AUTOINSTALL="yes"

@@ -1,3 +1,20 @@
+mm6108-driver (2.1.1-2) unstable; urgency=medium
+
+  * debian/mm6108-driver-dkms.dkms: pass KERNEL_SRC. Upstream's Makefile
+    adds '-I$(KERNEL_SRC)' right before '-DCONFIG_MORSE_SDIO'; with
+    KERNEL_SRC unset the bare '-I' consumed that define, so the SDIO bus
+    driver was never registered.
+  * debian/mm6108-driver-dkms.dkms: build with CONFIG_MORSE_SDIO_ALIGNMENT=4
+    so bulk SDIO buffers meet the 4-byte DMA alignment required by common
+    SBC MMC hosts (sunxi-mmc, dw_mmc, meson-gx-mmc); upstream defaults to 2.
+  * debian/mm6108-driver-dkms.dkms: build with CONFIG_MORSE_COUNTRY=US to
+    default the 'country' module parameter to US instead of upstream's AU.
+  * debian/mm6108-driver-dkms.dkms: build with CONFIG_MORSE_POWERSAVE_MODE=0
+    to disable power save by default (the 'enable_ps' module parameter);
+    upstream defaults to fully enabled.
+
+ -- Austin <vidplace7@gmail.com>  Tue, 22 Sep 2026 00:00:00 +0000
+
 mm6108-driver (2.1.1-1) unstable; urgency=medium
 
   * New upstream release (upstream tag mm6108-2.1.1).
