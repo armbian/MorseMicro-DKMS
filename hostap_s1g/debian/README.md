@@ -38,3 +38,20 @@ dpkg-buildpackage -us -uc
 
 Binaries are installed with `-s1g` suffix to allow coexistence with stock
 Debian hostapd and wpasupplicant packages.
+
+## NetworkManager is not supported
+
+`wpa_supplicant_s1g` is built without D-Bus (`CONFIG_CTRL_IFACE_DBUS_NEW`), so
+NetworkManager cannot drive a HaLow interface. This is deliberate: both
+NetworkManager and the supplicant's `WPAS_DBUS_NEW_SERVICE` hardcode the bus
+name `fi.w1.wpa_supplicant1`, so enabling D-Bus here would only make this
+package contend with Debian's `wpasupplicant` for that name.
+
+Use the per-interface unit instead, and tell NetworkManager to leave the
+interface alone via `unmanaged-devices=interface-name:<iface>` in
+`/etc/NetworkManager/conf.d/`:
+
+```bash
+# /etc/wpa-supplicant-s1g/wpa_supplicant-<iface>.conf
+systemctl enable --now wpa-supplicant-s1g@<iface>.service
+```
