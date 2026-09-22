@@ -27,6 +27,9 @@ override_dh_auto_install:
 	cp -a mmrc-submodule debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/
 	echo 'ccflags-y += -Wno-error' >> debian/mm6108-driver-dkms/usr/src/mm6108-driver-$(VERSION)/Makefile
 
+override_dh_installudev:
+	dh_installudev --name=morse-nm-unmanaged --priority=86
+
 override_dh_auto_clean:
 
 get-orig-source:
