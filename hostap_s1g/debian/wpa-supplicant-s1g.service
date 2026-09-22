@@ -1,6 +1,5 @@
 [Unit]
 Description=WPA supplicant with S1G (Wi-Fi HaLow) support
-Documentation=man:wpa_supplicant-s1g(8)
 
 [Service]
 Type=simple

@@ -1,6 +1,5 @@
 [Unit]
 Description=WPA supplicant with S1G support (interface-specific)
-Documentation=man:wpa_supplicant-s1g(8)
 Requires=sys-subsystem-net-devices-%i.device
 After=sys-subsystem-net-devices-%i.device
 
