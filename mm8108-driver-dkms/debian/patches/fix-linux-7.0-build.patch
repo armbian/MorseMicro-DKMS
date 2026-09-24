@@ -1,0 +1,49 @@
+Description: Fix build against Linux 7.0
+ The ieee80211_mgmt action-frame restructure (Linux commit 08e6183ed256) and
+ the wireless_dev-based cfg80211 get_station() (033fe322f585) both first
+ appeared in 7.1-rc1, but these guards select them from 7.0.
+Author: Austin <vidplace7@gmail.com>
+Forwarded: no
+Last-Update: 2026-09-24
+--- a/compat.h
++++ b/compat.h
+@@ -105,7 +105,7 @@
+     #define MORSE_IEEE80211_CSA_COMPLETE(_vif)  ieee80211_csa_is_complete(_vif)
+ #endif
+ 
+-#if KERNEL_VERSION(7, 0, 0) <= MAC80211_VERSION_CODE
++#if KERNEL_VERSION(7, 1, 0) <= MAC80211_VERSION_CODE
+ #define MORSE_ADDBA_ACTION_CODE(_mgmt) ((_mgmt)->u.action.action_code)
+ #define MORSE_IEEE80211_MIN_ACTION_SIZE_CATEGORY IEEE80211_MIN_ACTION_SIZE(category)
+ #define MORSE_IEEE80211_MIN_ACTION_SIZE_ACTION_CODE IEEE80211_MIN_ACTION_SIZE(action_code)
+--- a/mesh.h
++++ b/mesh.h
+@@ -113,7 +113,7 @@
+ 	PLINK_CLOSE
+ };
+ 
+-#if KERNEL_VERSION(7, 0, 0) <= MAC80211_VERSION_CODE
++#if KERNEL_VERSION(7, 1, 0) <= MAC80211_VERSION_CODE
+ #define MORSE_MPM_ACTION_CODE(_mgmt) ((_mgmt)->u.action.action_code)
+ #define MORSE_MPM_VARIABLE(_mgmt) ((_mgmt)->u.action.self_prot.variable)
+ #else
+--- a/wiphy.c
++++ b/wiphy.c
+@@ -1254,7 +1254,7 @@
+ }
+ 
+ static int morse_wiphy_get_station(struct wiphy *wiphy,
+-#if KERNEL_VERSION(7, 0, 0) <= MAC80211_VERSION_CODE
++#if KERNEL_VERSION(7, 1, 0) <= MAC80211_VERSION_CODE
+ 				   struct wireless_dev *wdev,
+ #else
+ 				   struct net_device *ndev,
+@@ -1262,7 +1262,7 @@
+ 				   const u8 *mac,
+ 				   struct station_info *sinfo)
+ {
+-#if KERNEL_VERSION(7, 0, 0) <= MAC80211_VERSION_CODE
++#if KERNEL_VERSION(7, 1, 0) <= MAC80211_VERSION_CODE
+ 	struct morse_vif *mors_vif = morse_wdev_to_morse_vif(wdev);
+ #else
+ 	struct morse_vif *mors_vif = netdev_priv(ndev);
