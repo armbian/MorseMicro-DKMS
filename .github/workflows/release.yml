@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
+    with:
+      skip-kernel-test: true
   release:
     needs: [build]
     runs-on: ubuntu-26.04

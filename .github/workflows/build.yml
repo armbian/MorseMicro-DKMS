@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
   workflow_call:
+    inputs:
+      skip-kernel-test:
+        description: Skip the DKMS kernel tests, e.g. to run them without blocking on them
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -141,3 +146,10 @@ jobs:
             *.deb
             *.buildinfo
             *.changes
+
+  kernel-test:
+    needs: [build]
+    # inputs is empty on push and pull_request, so this runs unless a caller
+    # opts out.
+    if: ${{ !inputs.skip-kernel-test }}
+    uses: ./.github/workflows/kernel-test.yml

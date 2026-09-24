@@ -1,0 +1,154 @@
+name: DKMS Kernel Compat
+
+# Installs the built DKMS packages against Ubuntu's mainline kernel headers
+# (https://kernel.ubuntu.com/mainline/), one job per kernel, and checks the
+# postinst built and installed every module for that kernel.
+#
+# Called from build.yml once the packages are built.
+
+on:
+  workflow_call:
+
+jobs:
+  dkms:
+    name: linux ${{ matrix.kernel }} (${{ matrix.package }})
+    runs-on: ubuntu-26.04
+    # Resolute ships every GCC (12-15) the headers' Makefiles hardcode. The
+    # package under test is the resolute build, to match.
+    container: ubuntu:26.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - mm6108-driver-dkms
+          - mm8108-driver-dkms
+        # Directory names under https://kernel.ubuntu.com/mainline/ without the leading 'v'.
+        # Keep these quoted: unquoted, YAML reads 7.0 as the number 7.
+        kernel:
+          - "6.1"
+          - "6.6"
+          - "6.12"
+          - "6.18"
+          - "7.0"
+          - "7.1"
+          - "7.2"
+          # - "7.3"
+
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      DEBIAN_FRONTEND: noninteractive
+
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ matrix.package }}-resolute-amd64
+          path: package
+
+      - name: Install download tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl
+
+      - name: Download kernel headers
+        id: headers
+        env:
+          MAINLINE: ${{ matrix.kernel }}
+        run: |
+          base="https://kernel.ubuntu.com/mainline/v${MAINLINE}/amd64"
+          if ! index=$(curl -fsSL --retry 3 "$base/"); then
+            echo "::error::Could not list $base/ (is v${MAINLINE} a mainline build?)"
+            exit 1
+          fi
+
+          # Each build publishes a per-flavour headers package plus an
+          # arch-independent one it depends on. A few releases (e.g. 5.16) were
+          # rebuilt and list two of each; those are not supported.
+          all=$(grep -oE 'linux-headers-[^"/]+_all\.deb' <<<"$index" | sort -u) || true
+          generic=$(grep -oE 'linux-headers-[^"/]+-generic_[^"/]+_amd64\.deb' <<<"$index" | sort -u) || true
+          if [[ -z $all || -z $generic || $all == *$'\n'* || $generic == *$'\n'* ]]; then
+            echo "::error::Expected one amd64 generic headers build in $base/, found: ${all//$'\n'/ } ${generic//$'\n'/ }"
+            exit 1
+          fi
+          # linux-headers-<kernel release>_<version>_amd64.deb
+          release=${generic#linux-headers-}
+          release=${release%%_*}
+
+          mkdir headers
+          for deb in "$all" "$generic"; do
+            echo "Downloading $deb"
+            curl -fsSL --retry 3 -o "headers/$deb" "$base/$deb"
+          done
+
+          echo "release=$release" >> "$GITHUB_OUTPUT"
+
+      - name: Install kernel headers
+        run: apt-get install -y --no-install-recommends ./headers/*.deb
+
+      - name: Install the kernel's compiler
+        env:
+          KERNEL_RELEASE: ${{ steps.headers.outputs.release }}
+        run: |
+          # The headers' Makefile hardcodes the compiler the kernel was built
+          # with (CC = $(CROSS_COMPILE)gcc-N), so module builds need that one.
+          makefile="/usr/src/linux-headers-$KERNEL_RELEASE/Makefile"
+          gcc=$(sed -nE 's/^CC[[:space:]]*=[[:space:]]*\$\(CROSS_COMPILE\)(gcc-[0-9]+)[[:space:]]*$/\1/p' "$makefile")
+          if [[ -z $gcc ]]; then
+            echo "::error::No 'CC = \$(CROSS_COMPILE)gcc-N' line in $makefile"
+            exit 1
+          fi
+          apt-get install -y --no-install-recommends "$gcc"
+
+      # The postinst builds and installs the modules for every kernel with
+      # headers, and fails if a build fails. Without --no-install-recommends,
+      # dkms would pull in resolute's own kernel headers and build for those
+      # too.
+      - name: Install ${{ matrix.package }}
+        run: apt-get install -y --no-install-recommends ./package/${{ matrix.package }}_*.deb
+
+      - name: Verify modules
+        env:
+          PACKAGE: ${{ matrix.package }}
+          KERNEL_RELEASE: ${{ steps.headers.outputs.release }}
+        run: |
+          dkms status
+
+          conf=$(dpkg -L "$PACKAGE" | grep '^/usr/src/.*/dkms.conf$')
+          modules=$(sed -n 's/^BUILT_MODULE_NAME\[[0-9]*\]="\(.*\)"$/\1/p' "$conf")
+          if [[ -z $modules ]]; then
+            echo "::error::No BUILT_MODULE_NAME entries in $conf"
+            exit 1
+          fi
+
+          failed=0
+          for module in $modules; do
+            ko=$(find "/lib/modules/$KERNEL_RELEASE" -name "$module.ko*" -print -quit)
+            if [[ -z $ko ]]; then
+              echo "::error::$module was not installed for $KERNEL_RELEASE"
+              failed=1
+              continue
+            fi
+            vermagic=$(modinfo -F vermagic "$ko")
+            echo "$ko: $vermagic"
+            if [[ $vermagic != "$KERNEL_RELEASE "* ]]; then
+              echo "::error::$module was built for '$vermagic', not $KERNEL_RELEASE"
+              failed=1
+            fi
+          done
+          exit $failed
+
+      - name: Show DKMS build log
+        if: failure()
+        run: |
+          logs=$(find /var/lib/dkms -name make.log 2>/dev/null) || true
+          if [[ -z $logs ]]; then
+            echo "No DKMS build log found"
+          fi
+          for log in $logs; do
+            echo "==> $log"
+            cat "$log"
+          done
