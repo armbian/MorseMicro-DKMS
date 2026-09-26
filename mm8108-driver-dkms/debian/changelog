@@ -1,3 +1,12 @@
+mm8108-driver (2.1.0-3) unstable; urgency=medium
+
+  * debian/patches/fix-linux-7.0-build.patch: fix the build against Linux
+    7.0. Upstream selects the ieee80211_mgmt action-frame layout and the
+    wireless_dev get_station() signature from 7.0, but both first appeared
+    in 7.1-rc1.
+
+ -- Austin <vidplace7@gmail.com>  Thu, 24 Sep 2026 00:00:00 +0000
+
 mm8108-driver (2.1.0-2) unstable; urgency=medium
 
   * debian/mm8108-driver-dkms.dkms: pass KERNEL_SRC. Upstream's Makefile
