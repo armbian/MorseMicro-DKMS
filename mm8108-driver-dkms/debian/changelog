@@ -4,6 +4,9 @@ mm8108-driver (2.1.0-3) unstable; urgency=medium
     7.0. Upstream selects the ieee80211_mgmt action-frame layout and the
     wireless_dev get_station() signature from 7.0, but both first appeared
     in 7.1-rc1.
+  * debian/rules: call dh_dkms with -V. Before dkms 3.2 (bookworm, noble)
+    dh_dkms left #MODULE_VERSION# unsubstituted without it, so the postinst
+    tried to build mm8108-driver/#MODULE_VERSION# and failed.
 
  -- Austin <vidplace7@gmail.com>  Thu, 24 Sep 2026 00:00:00 +0000
 

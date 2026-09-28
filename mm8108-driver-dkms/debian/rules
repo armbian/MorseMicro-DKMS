@@ -27,6 +27,11 @@ override_dh_auto_install:
 	cp -a mmrc-submodule debian/mm8108-driver-dkms/usr/src/mm8108-driver-$(VERSION)/
 	echo 'ccflags-y += -Wno-error' >> debian/mm8108-driver-dkms/usr/src/mm8108-driver-$(VERSION)/Makefile
 
+# dh_dkms before 3.2 (bookworm, noble) only substitutes #MODULE_VERSION# in
+# dkms.conf and the maintainer scripts when -V is passed.
+override_dh_dkms:
+	dh_dkms -V
+
 override_dh_installudev:
 	dh_installudev --name=morse-nm-unmanaged --priority=90
 
