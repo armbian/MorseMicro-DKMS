@@ -11,11 +11,9 @@ on:
 
 jobs:
   dkms:
-    name: linux ${{ matrix.kernel }} (${{ matrix.package }})
+    name: ${{ matrix.ubuntu }} ${{ matrix.kernel }} (${{ matrix.package }})
     runs-on: ubuntu-26.04
-    # Resolute ships every GCC (12-15) the headers' Makefiles hardcode. The
-    # package under test is the resolute build, to match.
-    container: ubuntu:26.04
+    container: ubuntu:${{ matrix.ubuntu }}
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -23,6 +21,9 @@ jobs:
         package:
           - mm6108-driver-dkms
           - mm8108-driver-dkms
+        ubuntu:
+          - resolute
+          - noble
         # Directory names under https://kernel.ubuntu.com/mainline/ without the leading 'v'.
         # Keep these quoted: unquoted, YAML reads 7.0 as the number 7.
         kernel:
@@ -34,6 +35,18 @@ jobs:
           - "7.1"
           - "7.2"
           # - "7.3"
+        # Exclude noble for >6.12 kernels built with gcc-15
+        exclude:
+          - ubuntu: noble
+            kernel: "6.18"
+          - ubuntu: noble
+            kernel: "7.0"
+          - ubuntu: noble
+            kernel: "7.1"
+          - ubuntu: noble
+            kernel: "7.2"
+          # - ubuntu: noble
+          #   kernel: "7.3"
 
     defaults:
       run:
@@ -46,7 +59,7 @@ jobs:
       - name: Download package
         uses: actions/download-artifact@v8
         with:
-          name: ${{ matrix.package }}-resolute-amd64
+          name: ${{ matrix.package }}-${{ matrix.ubuntu }}-amd64
           path: package
 
       - name: Install download tools
@@ -105,7 +118,7 @@ jobs:
 
       # The postinst builds and installs the modules for every kernel with
       # headers, and fails if a build fails. Without --no-install-recommends,
-      # dkms would pull in resolute's own kernel headers and build for those
+      # dkms would pull in the default distro kernel headers and build for those
       # too.
       - name: Install ${{ matrix.package }}
         run: apt-get install -y --no-install-recommends ./package/${{ matrix.package }}_*.deb
