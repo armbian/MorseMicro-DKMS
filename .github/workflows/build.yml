@@ -18,7 +18,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distro: [forky, trixie, bookworm, resolute, noble]
+        distro: 
+          - forky # Debian 14
+          - trixie # Debian 13
+          - bookworm # Debian 12
+          - resolute # Ubuntu 26.04
+          - noble # Ubuntu 24.04
         package:
           - hostap_s1g
           - morse_cli
@@ -95,9 +100,18 @@ jobs:
         working-directory: ${{ matrix.package }}
         env:
           distro: ${{ matrix.distro }}
-        # Rewrite the Debian changelog to append the '~distro' to the latest version (line 1).
+        # Rewrite the Debian changelog to append a numbered '~<suffix>' to the latest version (line 1).
+        # Codenames don't sort across upgrades (~trixie > ~forky), so map each to its release number.
         run: |
-          sed -i -E "1s/\(([^)]+)\)/(\1~${distro})/" debian/changelog
+          case "$distro" in
+            forky) suffix=deb14 ;;
+            trixie) suffix=deb13 ;;
+            bookworm) suffix=deb12 ;;
+            resolute) suffix=ubuntu26.04 ;;
+            noble) suffix=ubuntu24.04 ;;
+            *) echo "::error::No version suffix mapped for distro '$distro'"; exit 1 ;;
+          esac
+          sed -i -E "1s/\(([^)]+)\)/(\1~${suffix})/" debian/changelog
 
       - name: Build Container
         uses: devcontainers/ci@v0.3
